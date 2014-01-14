@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id = "com.outremersystemdesign.tsexp"
+        versionCode="10"
+        version = "0.0.1">
+
+    <!-- See for reference https://build.phonegap.com/docs/config-xml -->
+    <!-- versionCode is optional and Android only -->
+
+    <name>Audio POC</name>
+
+    <description>
+        Developmental version (POC only)
+    </description>
+
+    <author href="https://www.outremersystemdesign.com" email="at.taylor@yahoo.com">
+        Anna Taylor
+    </author>
+
+    <!-- allow reaching out to REST services in any domain -->
+    <access origin="http://216.74.49.91:8080" subdomains="true" />
+    <access origin="http://dev-treasuredstories.com" subdomains="true" />
+    <access origin="http://app.treasuredstories.com" subdomains="true" />
+    <access origin="http://netdna.bootstrapcdn.com/" subdomains="true"/>
+
+    <!-- core plugins -->
+    <gap:plugin name="org.apache.cordova.battery-status" />
+    <gap:plugin name="org.apache.cordova.camera" />
+    <gap:plugin name="org.apache.cordova.media-capture" />
+    <gap:plugin name="org.apache.cordova.console" />
+    <gap:plugin name="org.apache.cordova.contacts" />
+    <gap:plugin name="org.apache.cordova.device" />
+    <gap:plugin name="org.apache.cordova.device-motion" />
+    <gap:plugin name="org.apache.cordova.device-orientation" />
+    <gap:plugin name="org.apache.cordova.file" />
+    <gap:plugin name="org.apache.cordova.file-transfer" />
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.globalization" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" />
+    <gap:plugin name="org.apache.cordova.media" />
+    <gap:plugin name="org.apache.cordova.dialogs" />
+    <gap:plugin name="org.apache.cordova.vibration" />
+
+    <preference name="phonegap-version" value="3.1.0" />
+
+
+    <!-- ANNA Notes of config features of interest -->
+
+    <!-- AT: only build against these target platforms -->
+    <gap:platform name="ios" />
+    <gap:platform name="android" />
+
+    <!-- Make landscape to better emulate tablet. This is multi-platform -->
+    <preference name="orientation" value="landscape" />
+
+    <!-- Full screen : set to false right now, will hide the status bar. Also multi platform-->
+    <preference name="fullscreen" value="true" />
+
+    <!--iOS only: target device . values are universal, handset or tablet -->
+    <preference name="target-device" value="universal" />
+
+    <!-- Icon for app. This is the default -->
+    <icon src="icon.jpg" />
+
+    <!--<icon src="img/splash/ios/ts_app_icon__purple_72.png" gap:platform="ios" width="72" height="72" />-->
+    <!--<icon src="img/splash/ios/ts_app_icon__purple_144.png" gap:platform="ios" width="144" height="144" />-->
+
+    <!-- Special resolutions for different iPads. Included here but commented out -->
+
+    <!--<icon src="img/icons/ios/ts_app_icon_purple_57.png" gap:platform="ios" width="57" height="57" />-->
+
+    <!--<icon src="img/icons/ios/ts_app_icon_purple_114.png" gap:platform="ios" width="114" height="114" />-->
+
+    <!-- retina iPad support: PhoneGap 2.5.0+ only -->
+
+
+    <!-- Splash screen stuff -->
+    <!-- default -->
+    <gap:splash src="icon.jpg" />
+    <!-- custom stuff. commenting out width and height attributes. including here for reference: width="320" height="480"-->
+    <!-- <gap:splash src="img/splash/logo_big.png" gap:platform="ios" />
+    <gap:splash src="img/splash/logo_big.png" gap:platform="android" /> -->
+    <!--<gap:splash src="img/splash/ios/splashscrn_purple_2048x1496.png" gap:platform="ios" width="2048" height="1496" />-->
+    <!--<gap:splash src="splash/ios/Default-Portrait_at_2x.png" gap:platform="ios" width="1536" height="2008" />-->
+    <!--<gap:splash src="img/splash/ios/splashscrn_purple_1024x748.png" gap:platform="ios" width="1024" height="748" />-->
+    <!--<gap:splash src="splash/ios/Default-Portrait.png" gap:platform="ios" width="768" height="1004" />-->
+
+    <!-- permissions -->
+
+    <!-- to enable individual permissions use the following examples
+<feature name="http://api.phonegap.com/1.0/battery"/>
+<feature name="http://api.phonegap.com/1.0/camera"/>
+<feature name="http://api.phonegap.com/1.0/contacts"/>
+<feature name="http://api.phonegap.com/1.0/file"/>
+<feature name="http://api.phonegap.com/1.0/geolocation"/>
+<feature name="http://api.phonegap.com/1.0/media"/>
+<feature name="http://api.phonegap.com/1.0/network"/>
+<feature name="http://api.phonegap.com/1.0/notification"/> -->
+
+
+</widget>

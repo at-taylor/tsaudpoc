@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Treasured Stories: Audio POC</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+    <link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.theme-1.3.2.min.css" />
+
+
+
+    <script>
+        //
+        // define a global variable to point to where the service code resides
+        //
+       //var tsServiceURLDomain = "http://localhost:8080/";
+       var tsServiceURLDomain = "http://216.74.49.91:8080/";
+       console.log("Using service domain of: " + tsServiceURLDomain);
+
+    </script>
+
+    <script src="js/json-common.js"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).bind('mobileinit', function() {
+            console.log("TREASURED STORIES document: framework: mobileinit()");
+            $.mobile.page.prototype.options.addBackBtn = true;
+
+            if (tsServiceURLDomain == "http://localhost:8080/"){
+                //console.log("commenting out native menu option selection");
+                $.mobile.selectmenu.prototype.options.nativeMenu = false;
+                console.log("   set native menu =false");
+            }
+            console.log("    setting domCache to true");
+            $.mobile.page.prototype.options.domCache = true;
+            localStorage.clear();
+            sessionStorage.clear();
+           // $('#login_submit').addClass('ui-disabled');
+            //appCacheCategoryList("appCacheCat");
+            //appCacheStoryStarterCategoryList("appCacheStarterCat");
+            ///appCacheConsol("appCache");
+            console.log("   end mobileinit");
+        } );
+    </script>
+    <script src="js/jquery.mobile-1.3.2.min.js"></script>
+
+    <script src="phonegap.js"></script>
+
+
+</head>
+
+<body>
+
+<div id="pocPage" data-role="page" >
+    <!--style="background: transparent url('img/navbut/background.png') repeat;"-->
+    <!--<div data-theme="c" data-role="header" >-->
+        <!--<h1><img src="img/splash/logo_big.png"></h1>-->
+    <!--</div>-->
+
+
+    <div data-role="content" >
+
+        <button id="pocPageRecordBtn">Start Record</button>
+
+        <audio id="pocPageAudioCtl" controls>
+            <source id="pocPageWavSrc" src="nosrc" type="audio/wav">
+        </audio>
+
+        <textarea id="pocPageDebugArea">
+
+        </textarea>
+
+        <audio id="pocPageAudioCtlStatic" controls>
+            <source id="pocPageWavSrcStatic" src="G2MTestSound.wav" type="audio/wav">
+        </audio>
+
+    </div>
+
+        <!-- For testing when no authentication is needed -->
+        <!--<a href="tsnav.html" data-role="button">Submit</a>-->
+
+        <script>
+            console.log("pocPage js: Executing");
+
+            $(document).on('pagebeforeshow', '#pocPage', function(){
+
+                console.log("pocPage: pagebeforeshow: start");
+
+                $(document).off('click', '#pocPageRecordBtn').on('click', '#pocPageRecordBtn',function(event) {
+
+                    var msg = "pocPage: pocPageRecordBtn: onclick(): start";
+                    console.log(msg);
+
+                    $('#pocPageDebugArea').val(msg + '\n');
+
+                    captureAudio();
+
+                    msg = "pocPage: pocPageRecordBtn: onclick(): end";
+                    console.log(msg);
+
+                    $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                })
+            });
+
+            function captureAudio() {
+
+                var msg =   "pocPage captureAudio(): start"   ;
+                console.log(msg);
+
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                // Launch device audio recording application,
+                // allowing user to capture up to 2 audio clips
+                navigator.device.capture.captureAudio(captureSuccess, captureError, {limit: 1});
+
+
+                msg =   "pocPage captureAudio(): end";
+                console.log(msg);
+
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+            }
+
+            function captureSuccess(mediaFiles) {
+
+                var msg =   "pocPage captureSuccess(): start";
+
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                msg = "pocPage: captureSuccess(): Full Path from input mediaFiles[0]: ";
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                msg = mediaFiles[0].fullPath;
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                msg = "pocPage: captureSuccess(): Src attribute before dynamic set: ";
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                msg =  $("#pocPageWavSrc").attr("src")   ;
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                $("#pocPageWavSrc").attr("src", mediaFiles[0]).detach().appendTo("pocPageAudioCtl");
+
+                msg =   "pocPage captureSuccess(): After setting attribute source on wav: value: ";
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                msg =  $("#pocPageWavSrc").attr("src")   ;
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+//                var i, len;
+//                for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+//                    uploadFile(mediaFiles[i]);
+//                }
+
+                var msg =   "pocPage captureSuccess(): end";
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+            }
+
+            // Called if something bad happens.
+            //
+            function captureError(error) {
+
+                var msg =   "pocPage captureError(): start"
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                msg = error;
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                //var msg = 'An error occurred during capture: ' + error.code;
+                //navigator.notification.alert(msg, null, 'Uh oh!');
+
+                var msg =   "pocPage captureError(): end"
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+            }
+
+        </script>
+
+
+</div>  <!-- end of loginPage -->
+
+
+</body>
+
+</html>

@@ -15,7 +15,7 @@
     </description>
 
     <author href="https://www.outremersystemdesign.com" email="at.taylor@yahoo.com">
-        Anna Taylor
+        Anna Taylor  (Outremer System design)
     </author>
 
     <!-- allow reaching out to REST services in any domain -->
@@ -61,7 +61,7 @@
     <preference name="target-device" value="universal" />
 
     <!-- Icon for app. This is the default -->
-    <icon src="icon.jpg" />
+    <icon src="icon2.jpg" />
 
     <!--<icon src="img/splash/ios/ts_app_icon__purple_72.png" gap:platform="ios" width="72" height="72" />-->
     <!--<icon src="img/splash/ios/ts_app_icon__purple_144.png" gap:platform="ios" width="144" height="144" />-->
@@ -77,7 +77,7 @@
 
     <!-- Splash screen stuff -->
     <!-- default -->
-    <gap:splash src="icon.jpg" />
+    <gap:splash src="icon2.jpg" />
     <!-- custom stuff. commenting out width and height attributes. including here for reference: width="320" height="480"-->
     <!-- <gap:splash src="img/splash/logo_big.png" gap:platform="ios" />
     <gap:splash src="img/splash/logo_big.png" gap:platform="android" /> -->

@@ -181,12 +181,12 @@ correctly when cordova.js is pointed to in your index.html. This issue will be r
         console.log("onDeviceReady: " + document.getElementById("PhonegapVerID").innerHTML);
         msg = "pocMediaPage: onDeviceReady(): onDeviceReady: " + document.getElementById("PhonegapVerID").innerHTML;
         console.log(msg);
-        $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+        $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
         var devicePlatform = device.platform;
-        msg = "pocMediaPage: onDeviceReady(): Platform: " + devicePLatformL;
+        msg = "pocMediaPage: onDeviceReady(): Platform: " +    devicePlatform;
         console.log(msg);
-        $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+        $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
         //console.log("*** phoneCheck.android: " + phoneCheck.android);
         //console.log("*** phoneCheck.ios: " + phoneCheck.ios);

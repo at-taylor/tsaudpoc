@@ -1,0 +1,210 @@
+<!--There is an issue in Intel XDK version 0028 that causes the App Designer to not render all element
+correctly when cordova.js is pointed to in your index.html. This issue will be resolved in future releases.....-->
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+
+<body>
+
+
+
+
+<!-- content goes here-->
+<div class="uwrap">
+    <div class="upage background-color" data-role="page" id="pocMediaPage">
+        <div class="upage-outer">
+            <div data-role="header" class="container-group inner-element uib_w_2" data-uib="jquery_mobile/header" data-theme="b">
+                <h1>Audio Sample v1.0</h1>
+                <div class="widget-container wrapping-col single-centered"></div>
+                <div class="widget-container content-area horiz-area wrapping-col left"></div>
+                <div class="widget-container content-area horiz-area wrapping-col right"></div>
+            </div>
+
+            <div data-role="content">
+            <div class="upage-content">
+
+                <div class="grid grid-pad urow uib_row_1 row-height-1" data-uib="layout/row">
+                    <div class="col uib_col_1 col-0_12-12 subheader-bkgd" data-uib="layout/col">
+                        <div class="widget-container content-area null vertical-col center">
+
+                            <div class="widget uib_w_3 app-text subheader-margin" data-uib="media/text" id="PhonegapVerID">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Record with PhoneGap version:</p>
+                                </div>
+                            </div><span class="uib_shim"></span>
+                        </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+                <div class="grid grid-pad urow uib_row_3 row-height-3" data-uib="layout/row">
+                    <div class="col uib_col_3 col-0_12-12" data-uib="layout/col">
+                        <div class="widget-container content-area wrapping-col left">
+
+                            <a class="widget uib_w_4 d-margins" data-uib="jquery_mobile/button" data-role="button" id="startRecID" onclick="startRecording()">Record</a><a class="widget uib_w_5 d-margins" data-uib="jquery_mobile/button" data-role="button" id="stopRecID" onclick="stopRecording()">Stop</a><span class="uib_shim"></span>
+                        </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+
+                <div class="grid urow uib_row_4 row-height-4 grid-pad" data-uib="layout/row">
+                    <div class="col uib_col_4 col-0_12-12" data-uib="layout/col">
+                        <div class="widget-container content-area vertical-col">
+
+                            <div class="widget uib_w_6 element-margin" data-uib="media/text" id="RecStatusID">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Status:</p>
+                                </div>
+                            </div>
+                            <div class="widget uib_w_7 element-margin" data-uib="media/text" id="media_rec_pos">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Audio position: 0 sec</p>
+                                    <p></p>
+                                </div>
+                            </div><span class="uib_shim"></span>
+                        </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+
+                <div class="grid grid-pad urow uib_row_5 row-height-5" data-uib="layout/row">
+                    <div class="col uib_col_5 col-0_12-12 subheader-bkgd" data-uib="layout/col">
+                        <div class="widget-container content-area vertical-col">
+
+                            <div class="widget uib_w_8 app-text subheader-margin" data-uib="media/text" id="PhonegapVerID">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Playback using PhoneGap</p>
+                                </div>
+                            </div><span class="uib_shim"></span>
+                        </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+
+                <div class="grid grid-pad urow uib_row_6 row-height-6" data-uib="layout/row">
+                    <div class="col uib_col_6 col-0_12-12" data-uib="layout/col">
+                        <div class="widget-container content-area wrapping-col left">
+
+                            <a class="widget uib_w_9 d-margins" data-uib="jquery_mobile/button" data-role="button" id="startPlayID" onclick="playMusic()">Play</a><a class="widget uib_w_10 d-margins" data-uib="jquery_mobile/button" data-role="button" id="pausePlayID" onclick="pauseMusic()">Pause</a><a class="widget uib_w_11 d-margins"
+                                                                                                                                                                                                                                                                                                              data-uib="jquery_mobile/button" data-role="button" id="stopPlayID" onclick="stopMusic()">Stop</a><span class="uib_shim"></span>
+                        </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+
+                <div class="grid grid-pad urow uib_row_7 row-height-7" data-uib="layout/row">
+                    <div class="col uib_col_7 col-0_12-12" data-uib="layout/col">
+                        <div class="widget-container content-area vertical-col">
+
+                            <div class="widget uib_w_12 element-margin" data-uib="media/text" id="PlayStatusID">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Status:</p>
+                                </div>
+                            </div>
+                            <div class="widget uib_w_13 element-margin" data-uib="media/text" id="media_pos">
+                                <div class="widget-container left-receptacle"></div>
+                                <div class="widget-container right-receptacle"></div>
+                                <div>
+                                    <p>Audio position: 0 sec</p>
+                                </div>
+                            </div><span class="uib_shim"></span>
+                        </div>
+                    </div>
+                    <span class="uib_shim"></span>
+                </div>
+            </div>
+            </div> <!-- end of content div -->
+            <!-- /upage-content -->
+
+            <div data-role="footer" data-position="fixed" class="container-group inner-element uib_w_1" data-uib="jquery_mobile/footer" data-theme="b">
+                <h1></h1>
+                <div class="widget-container wrapping-col single-centered"></div>
+                <div class="widget-container content-area horiz-area wrapping-col left"></div>
+                <div class="widget-container content-area horiz-area wrapping-col right"></div>
+            </div>
+        </div>
+        <!-- /upage-outer -->
+
+    </div>
+    <!-- /upage -->
+
+
+
+<link rel="stylesheet" type="text/css" href="sam/css/index_main.less.css" class="main-less">
+<link rel="stylesheet" type="text/css" href="sam/css/master.css">
+
+<script type="text/javascript" src="sam/js/deviceCheck.js"></script>
+<script type="text/javascript" src="sam/js/mediaHandlers.js"></script>
+
+
+<style type="text/css">
+        /* Prevent copy paste for all elements except text fields */
+    *  { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); }
+    input, textarea  { -webkit-user-select:text; }
+</style>
+
+<script type="text/javascript">
+
+    console.log("pocMediaPage: executing js");
+
+    /* This function runs once the page is loaded, but appMobi is not yet active */
+    var init = function(){
+
+    };
+    window.addEventListener("load",init,false);
+
+    /* This code prevents users from dragging the page */
+    var preventDefaultScroll = function(event) {
+        event.preventDefault();
+        window.scroll(0,0);
+        return false;
+    };
+    document.addEventListener('touchmove', preventDefaultScroll, false);
+</script>
+
+
+<!--There is an issue in Intel XDK version 0028 that causes the App Designer to not render all element
+  correctly when cordova.js is pointed to in your index.html. This issue will be resolved in future releases.....-->
+<script type="text/javascript">
+    function onDeviceReady() {
+        document.getElementById("PhonegapVerID").innerHTML += window.device.cordova;
+        console.log("onDeviceReady: " + document.getElementById("PhonegapVerID").innerHTML);
+
+        console.log("*** phoneCheck.android: " + phoneCheck.android);
+        console.log("*** phoneCheck.ios: " + phoneCheck.ios);
+
+        // set initial button state
+        setButtonState(myMediaState.start);
+
+        // check if an existing media file already exist and reset button state
+        checkMediaRecFileExist();
+    }
+    document.addEventListener("deviceready", onDeviceReady, false);
+</script>
+
+<!--License files
+<link rel="stylesheet" type="text/css" href="license/license.css" />
+<script src="license/license.js"></script>-->
+<!---->
+
+</div> <!-- end of page div -->
+
+
+</div>
+<!-- /uwrap -->
+
+</body>
+
+</html>

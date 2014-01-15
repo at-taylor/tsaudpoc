@@ -312,7 +312,7 @@ function setButtonState(curState)
 {
     var msg = "pocMediaPage: mediaHandlers: setButtonState: start.  called with: " + curState;
     console.log(msg);
-    $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     var id_disabled_map = {"startRecID":false, 
                              "stopRecID":true, 
@@ -358,7 +358,7 @@ function setButtonState(curState)
 
     var msg = "pocMediaPage: mediaHandlers: setButtonState: end.  called with: " + curState;
     console.log(msg);
-    $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     return(id_disabled_map); 
 }

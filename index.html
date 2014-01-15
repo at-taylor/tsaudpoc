@@ -60,6 +60,8 @@
 
     <div data-role="content" >
 
+        <button href="media.html" id="pocPageGoToMedia">Go to Media Example</button>
+
         <button id="pocPageRecordBtn">Start Record</button>
 
         <audio id="pocPageAudioCtl" controls>
@@ -74,6 +76,8 @@
             <source id="pocPageWavSrcStatic" src="G2MTestSound.wav" type="audio/wav">
         </audio>
 
+        <input type="text" id="pocPageNetworkConn">
+
     </div>
 
         <!-- For testing when no authentication is needed -->
@@ -81,6 +85,35 @@
 
         <script>
             console.log("pocPage js: Executing");
+
+            // Wait for PhoneGap to load
+            //
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+            // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
+            //
+            function onDeviceReady() {
+                checkConnection();
+            }
+
+            function checkConnection() {
+
+                var networkState = navigator.network.connection.type;
+
+                var states = {};
+                states[Connection.UNKNOWN]  = 'Unknown connection';
+                states[Connection.ETHERNET] = 'Ethernet connection';
+                states[Connection.WIFI]     = 'WiFi connection';
+                states[Connection.CELL_2G]  = 'Cell 2G connection';
+                states[Connection.CELL_3G]  = 'Cell 3G connection';
+                states[Connection.CELL_4G]  = 'Cell 4G connection';
+                states[Connection.NONE]     = 'No network connection';
+
+                $('pocPageNetworkConn').val(states[networkState]);
+
+                //alert('Connection type: ' + states[networkState]);
+            }
+
 
             $(document).on('pagebeforeshow', '#pocPage', function(){
 

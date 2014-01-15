@@ -77,7 +77,7 @@
 
     <!-- Splash screen stuff -->
     <!-- default -->
-    <gap:splash src="icon.jpg" />
+    <gap:splash src="icon.png" />
     <!-- custom stuff. commenting out width and height attributes. including here for reference: width="320" height="480"-->
     <!-- <gap:splash src="img/splash/logo_big.png" gap:platform="ios" />
     <gap:splash src="img/splash/logo_big.png" gap:platform="android" /> -->

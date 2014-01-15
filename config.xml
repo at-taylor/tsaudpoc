@@ -61,7 +61,7 @@
     <preference name="target-device" value="universal" />
 
     <!-- Icon for app. This is the default -->
-    <icon src="icon2.jpg" />
+    <icon src="icon.png" />
 
     <!--<icon src="img/splash/ios/ts_app_icon__purple_72.png" gap:platform="ios" width="72" height="72" />-->
     <!--<icon src="img/splash/ios/ts_app_icon__purple_144.png" gap:platform="ios" width="144" height="144" />-->

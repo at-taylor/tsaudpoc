@@ -31,10 +31,18 @@ if(typeof console === "undefined") {
 
 function onOK_GetFile(fileEntry) {
     console.log("***test: File " + mediaRecFile + " at " + fileEntry.fullPath);
-    
+
+    var msg = "pocMediaPage: onOK_GetFile(): start";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
+    msg = "pocMediaPage: onOK_GetFile(): File Name: " + mediaRecFile + " at " + fileEntry.fullPath;
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
     // save the full file name
     mediaFileFullName = fileEntry.fullPath;
-    if (phoneCheck.ios)
+    //if (phoneCheck.ios)
         mediaRecFile = mediaFileFullName;
 
     if (checkFileOnly == true) { // check if file exist at app launch. 
@@ -50,20 +58,73 @@ function onOK_GetFile(fileEntry) {
         // specific for iOS device: recording start here in call-back function
         recordNow();
     }
+
+    msg = "pocMediaPage: onOK_GetFile(): end";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+}
+
+function onFail_GetFile(evt) {
+
+    var msg = "pocMediaPage: onFail_GetFile(): ";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
 }
 
 function onSuccessFileSystem(fileSystem) {
     console.log("***test: fileSystem.root.name: " + fileSystem.root.name);
 
+    var msg = "pocMediaPage: onSuccessFileSystem(): start";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
+    msg = "pocMediaPage: onSuccessFileSystem(): Root File System Name: " + fileSystem.root.name;
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
+
     if (checkFileOnly == true)
-        fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, onOK_GetFile, null);
+        fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, onOK_GetFile, onFail_GetFile);
     else
-        fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, onOK_GetFile, null);
+        fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, onOK_GetFile, onFail_GetFile);
+
+    msg = "pocMediaPage: onSuccessFileSystem(): end";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
     
 }
+
+function onFailFileSystem (evt){
+
+    var msg = "pocMediaPage: onFailFileSystem(): start";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
+    console.log(evt.target.error.code);
+
+    msg = "pocMediaPage: onFailFileSystem(): error code: " + evt.target.error.code;
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
+    var msg = "pocMediaPage: onFailFileSystem(): end";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
+}
 function checkMediaRecFileExist() {
+
+    var msg = "pocMediaPage: checkMediaRecFileExist(): start";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
     checkFileOnly = true;
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem, null);
+
+    msg = "pocMediaPage: checkMediaRecFileExist(): end";
+    console.log(msg);
+
+    $('#pocMediaPageDebugArea').val(msg + '\n');
 }
 
 function recordNow() {
@@ -91,6 +152,11 @@ function recordNow() {
 // Record audio    
 //     
 function startRecording() {
+
+    var msg = "pocMediaPage: startRecording(): start";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
+
     // change buttons state
     setButtonState(myMediaState.recording);
 
@@ -98,27 +164,34 @@ function startRecording() {
     if (my_recorder)
         my_recorder.release();
 
-    if (phoneCheck.android) {
-        my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
-        console.log("***test: new Media() for android ***");
-
-        recordNow();
-    }
-    else if (phoneCheck.windows7) {
-        my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
-        console.log("***test: new Media() for Windows7 ***");
-
-        recordNow();
-    }
-    else if (phoneCheck.ios) {
+//    if (phoneCheck.android) {
+//        my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+//        console.log("***test: new Media() for android ***");
+//
+//        recordNow();
+//    }
+//    else if (phoneCheck.windows7) {
+//        my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
+//        console.log("***test: new Media() for Windows7 ***");
+//
+//        recordNow();
+//    }
+//    else if (phoneCheck.ios) {
         //first create the file
         checkFileOnly = false;
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem, function() {
             console.log("***test: failed in creating media file in requestFileSystem");
+            msg = "pocMediaPage: startRecording(): failed in requestFileSystem call";
+            console.log(msg);
+            $('#pocMediaPageDebugArea').val(msg + '\n');
         });
 
-        console.log("***test: new Media() for ios***");
-    }
+//        console.log("***test: new Media() for ios***");
+//    }
+
+    msg = "pocMediaPage: startRecording(): end";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val(msg + '\n');
     
 }
 
@@ -237,6 +310,10 @@ function setAudioPosition(audioPosID, position) {
 // only "Record" button is enabled at init state
 function setButtonState(curState)
 {
+    var msg = "pocMediaPage: mediaHandlers: setButtonState: start.  called with: " + curState;
+    console.log(msg);
+    $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
     var id_disabled_map = {"startRecID":false, 
                              "stopRecID":true, 
                              "startPlayID":true, 
@@ -278,5 +355,10 @@ function setButtonState(curState)
 
     var keys = Object.keys(id_disabled_map); //the list of ids: ["startRecID", "stopRecID",...]
     keys.forEach(function(id){ document.getElementById(id).disabled = id_disabled_map[id];});
+
+    var msg = "pocMediaPage: mediaHandlers: setButtonState: end.  called with: " + curState;
+    console.log(msg);
+    $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
     return(id_disabled_map); 
 }

@@ -24,6 +24,11 @@ correctly when cordova.js is pointed to in your index.html. This issue will be r
             </div>
 
             <div data-role="content">
+
+
+            <textarea id="pocMediaPageDebugArea">
+            </textarea>
+
             <div class="upage-content">
 
                 <div class="grid grid-pad urow uib_row_1 row-height-1" data-uib="layout/row">
@@ -179,11 +184,25 @@ correctly when cordova.js is pointed to in your index.html. This issue will be r
   correctly when cordova.js is pointed to in your index.html. This issue will be resolved in future releases.....-->
 <script type="text/javascript">
     function onDeviceReady() {
+
+        var msg = "pocMediaPage: onDeviceReady(): start";
+        console.log(msg);
+
+        $('#pocMediaPageDebugArea').val(msg + '\n');
+
         document.getElementById("PhonegapVerID").innerHTML += window.device.cordova;
         console.log("onDeviceReady: " + document.getElementById("PhonegapVerID").innerHTML);
+        msg = "pocMediaPage: onDeviceReady(): onDeviceReady: " + document.getElementById("PhonegapVerID").innerHTML;
+        console.log(msg);
+        $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
-        console.log("*** phoneCheck.android: " + phoneCheck.android);
-        console.log("*** phoneCheck.ios: " + phoneCheck.ios);
+        var devicePlatform = device.platform;
+        msg = "pocMediaPage: onDeviceReady(): Platform: " + devicePLatformL;
+        console.log(msg);
+        $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+        //console.log("*** phoneCheck.android: " + phoneCheck.android);
+        //console.log("*** phoneCheck.ios: " + phoneCheck.ios);
 
         // set initial button state
         setButtonState(myMediaState.start);

@@ -69,7 +69,6 @@
         </audio>
 
         <textarea id="pocPageDebugArea">
-
         </textarea>
 
         <audio id="pocPageAudioCtlStatic" controls>
@@ -99,6 +98,8 @@
             function checkConnection() {
 
                 var networkState = navigator.network.connection.type;
+
+                $('pocPageNetworkConn').val(networkState);
 
                 var states = {};
                 states[Connection.UNKNOWN]  = 'Unknown connection';

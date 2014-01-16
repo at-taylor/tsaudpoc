@@ -84,6 +84,14 @@
         <script>
             console.log("pocPage js: Executing");
 
+            if (navigator.onLine) {
+                alert('online');
+            } else {
+                alert('offline');
+            }
+
+            window.addEventListener("offline", function(e) {alert("offline");});
+
             var msg =  "pocPage: attempting to set the static audio source.  current: " + $('#pocPageAudioCtlStatic').attr("src");
             console.log(msg);
             $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');

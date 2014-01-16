@@ -211,7 +211,7 @@ function stopRecording() {
     msg =  $("#pocMediaAudioPlayCtl").attr("src")   ;
     $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
-    $("#pocPageAudioCtl").attr("src", mediaFiles[0]);
+    //$("#pocPageAudioCtl").attr("src", mediaFiles[0]);
 
     msg = "pocMediaPage: stopRecording(): Src attribute after dynamic set: ";
     $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');

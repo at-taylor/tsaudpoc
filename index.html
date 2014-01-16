@@ -84,9 +84,15 @@
         <script>
             console.log("pocPage js: Executing");
 
-            console.log("pocPage: attempting to set the static audio source.  current: " + $('#pocPageAudioCtlStatic').attr("src"));
+            var msg =  "pocPage: attempting to set the static audio source.  current: " + $('#pocPageAudioCtlStatic').attr("src");
+            console.log(msg);
+            $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
             $('#pocPageAudioCtlStatic').attr("src", "G2MTestSound.wav");
-            console.log("pocPage: attempting to set the static audio source.  new: " + $('#pocPageAudioCtlStatic').attr("src"));
+
+            msg =  "pocPage: attempting to set the static audio source.  new: " + $('#pocPageAudioCtlStatic').attr("src")
+            console.log(msg);
+            $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
             // Wait for PhoneGap to load
             //
@@ -109,12 +115,18 @@
 
                 var msg = "pocPage: onDeviceReady: start";
                 console.log(msg);
-
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
                 var networkState = navigator.network.connection.type;
 
-                $('#pocPageNetworkConn').val(networkState);
+                msg = "pocPage: onDeviceReady: after network connection type";
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                msg = "pocPage: onDeviceReady: networkState: " + networkState;
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+                //$('#pocPageNetworkConn').val(networkState);
 
                 var states = {};
                 states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -125,11 +137,14 @@
                 states[Connection.CELL_4G]  = 'Cell 4G connection';
                 states[Connection.NONE]     = 'No network connection';
 
-                $('pocPageNetworkConn').val(states[networkState]);
+                //$('pocPageNetworkConn').val(states[networkState]);
+
+                msg = "pocPage: onDeviceReady: states: " + states[networkState];
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
                 msg = "pocPage: onDeviceReady: end";
                 console.log(msg);
-
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
                 alert('Connection type: ' + states[networkState]);

@@ -114,7 +114,7 @@
 
                 var networkState = navigator.network.connection.type;
 
-                $('pocPageNetworkConn').val(networkState);
+                $('#pocPageNetworkConn').val(networkState);
 
                 var states = {};
                 states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -132,7 +132,7 @@
 
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
-                //alert('Connection type: ' + states[networkState]);
+                alert('Connection type: ' + states[networkState]);
             }
 
 

@@ -71,7 +71,7 @@
         </textarea>
 
         <audio id="pocPageAudioCtlStatic" controls>
-            <source id="pocPageWavSrcStatic" src="G2MTestSound.wav" type="audio/wav">
+            <source id="pocPageWavSrcStatic" src="nosrc.wav" type="audio/wav">
         </audio>
 
         <input type="text" id="pocPageNetworkConn">
@@ -84,17 +84,33 @@
         <script>
             console.log("pocPage js: Executing");
 
+            console.log("pocPage: attempting to set the static audio source.  current: " + $('#pocPageAudioCtlStatic').attr("src"));
+            $('#pocPageAudioCtlStatic').attr("src", "G2MTestSound.wav");
+            console.log("pocPage: attempting to set the static audio source.  new: " + $('#pocPageAudioCtlStatic').attr("src"));
+
             // Wait for PhoneGap to load
             //
-            document.addEventListener("deviceready", onDeviceReady, false);
+            $('#pocPage').bind('pageinit', function(event) {
+
+                var msg = "pocPage: pageinit(): start";
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+                document.addEventListener("deviceready", onDeviceReady, false);
+
+                var msg = "pocPage: pageinit(): end";
+                console.log(msg);
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+            });
 
             // PhoneGap is loaded and it is now safe to make calls PhoneGap methods
             //
             function onDeviceReady() {
-                checkConnection();
-            }
 
-            function checkConnection() {
+                var msg = "pocPage: onDeviceReady: start";
+                console.log(msg);
+
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
                 var networkState = navigator.network.connection.type;
 
@@ -110,6 +126,11 @@
                 states[Connection.NONE]     = 'No network connection';
 
                 $('pocPageNetworkConn').val(states[networkState]);
+
+                msg = "pocPage: onDeviceReady: end";
+                console.log(msg);
+
+                $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
                 //alert('Connection type: ' + states[networkState]);
             }
@@ -170,15 +191,15 @@
                 msg = "pocPage: captureSuccess(): Src attribute before dynamic set: ";
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
-                msg =  $("#pocPageWavSrc").attr("src")   ;
+                msg =  $("#pocPageAudioCtl").attr("src")   ;
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
-                $("#pocPageWavSrc").attr("src", mediaFiles[0]).detach().appendTo("pocPageAudioCtl");
+                $("#pocPageAudioCtl").attr("src", mediaFiles[0]);
 
                 msg =   "pocPage captureSuccess(): After setting attribute source on wav: value: ";
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
-                msg =  $("#pocPageWavSrc").attr("src")   ;
+                msg =  $('#pocPageAudioCtl').attr("src")   ;
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
 //                var i, len;

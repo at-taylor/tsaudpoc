@@ -34,11 +34,11 @@ function onOK_GetFile(fileEntry) {
 
     var msg = "pocMediaPage: onOK_GetFile(): start";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     msg = "pocMediaPage: onOK_GetFile(): File Name: " + mediaRecFile + " at " + fileEntry.fullPath;
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     // save the full file name
     mediaFileFullName = fileEntry.fullPath;
@@ -61,14 +61,18 @@ function onOK_GetFile(fileEntry) {
 
     msg = "pocMediaPage: onOK_GetFile(): end";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 }
 
 function onFail_GetFile(evt) {
 
     var msg = "pocMediaPage: onFail_GetFile(): ";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
+    msg = "pocMediaPage: onFail_GetFile(): error code: " + evt.target.error.code;
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
 }
 
@@ -77,11 +81,11 @@ function onSuccessFileSystem(fileSystem) {
 
     var msg = "pocMediaPage: onSuccessFileSystem(): start";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     msg = "pocMediaPage: onSuccessFileSystem(): Root File System Name: " + fileSystem.root.name;
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
 
     if (checkFileOnly == true)
@@ -91,7 +95,7 @@ function onSuccessFileSystem(fileSystem) {
 
     msg = "pocMediaPage: onSuccessFileSystem(): end";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
     
 }
 
@@ -99,24 +103,24 @@ function onFailFileSystem (evt){
 
     var msg = "pocMediaPage: onFailFileSystem(): start";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     console.log(evt.target.error.code);
 
     msg = "pocMediaPage: onFailFileSystem(): error code: " + evt.target.error.code;
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     var msg = "pocMediaPage: onFailFileSystem(): end";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
 }
 function checkMediaRecFileExist() {
 
     var msg = "pocMediaPage: checkMediaRecFileExist(): start";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 
     checkFileOnly = true;
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem, null);
@@ -124,7 +128,7 @@ function checkMediaRecFileExist() {
     msg = "pocMediaPage: checkMediaRecFileExist(): end";
     console.log(msg);
 
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 }
 
 function recordNow() {
@@ -155,7 +159,7 @@ function startRecording() {
 
     var msg = "pocMediaPage: startRecording(): start";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val( $('#pocMediaPageDebugArea').val() + msg + '\n');
 
     // change buttons state
     setButtonState(myMediaState.recording);
@@ -183,7 +187,7 @@ function startRecording() {
             console.log("***test: failed in creating media file in requestFileSystem");
             msg = "pocMediaPage: startRecording(): failed in requestFileSystem call";
             console.log(msg);
-            $('#pocMediaPageDebugArea').val(msg + '\n');
+            $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
         });
 
 //        console.log("***test: new Media() for ios***");
@@ -191,13 +195,28 @@ function startRecording() {
 
     msg = "pocMediaPage: startRecording(): end";
     console.log(msg);
-    $('#pocMediaPageDebugArea').val(msg + '\n');
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
     
 }
 
 // Stop recording
 function stopRecording() {
     // enable "record" button but disable "stop"
+
+    var msg = "pocMediaPage: stopRecording(): start. ";
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
+    msg = "pocMediaPage: stopRecording(): Src attribute before dynamic set: ";
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+    msg =  $("#pocMediaAudioPlayCtl").attr("src")   ;
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
+    $("#pocPageAudioCtl").attr("src", mediaFiles[0]);
+
+    msg = "pocMediaPage: stopRecording(): Src attribute after dynamic set: ";
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+    msg =  $("#pocMediaAudioPlayCtl").attr("src")   ;
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
     setButtonState(myMediaState.finishRec);
 
     if (my_recorder) 
@@ -207,6 +226,9 @@ function stopRecording() {
 
     document.getElementById('RecStatusID').innerHTML = "<p>Status: stopped record</p>";
     console.log("***test: recording stopped***");
+
+    var msg = "pocMediaPage: stopRecording(): end. ";
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
 }
 
 // Play audio        

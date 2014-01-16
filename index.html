@@ -117,7 +117,7 @@
                 console.log(msg);
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
-                var networkState = navigator.network.connection.type;
+                var networkState = navigator.connection.type;
 
                 msg = "pocPage: onDeviceReady: after network connection type";
                 console.log(msg);

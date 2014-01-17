@@ -43,10 +43,23 @@ function audioCreateJPlayer(fileName) {
         keyEnabled: true
     });
 
-    msg = "audioJs: audioCreateJPlayer(): end called with: " fileName;
+    msg = "audioJs: audioCreateJPlayer(): end called with: " + fileName;
     console.log(msg);
     $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
 
+}
+
+function audioSwitchFile() {
+
+    var msg = "audioJs: audioSwitchFile(): start";
+    console.log(msg);
+    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+
+    audioSetPlayerFileName('jquery_jplayer_1', "G2MTestSound.wav");
+
+    msg = "audioJs: audioSwitchFile(): end";
+    console.log(msg);
+    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
 }
 
 function audioSetPlayerFileName(playerName, fileName) {

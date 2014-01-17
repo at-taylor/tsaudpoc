@@ -11,7 +11,7 @@
 
     <div data-role="content">
 
-        <a data-role="button" id="audioStartRecID" onclick="audioJsStartRecording()">
+        <a id="audioStartRecID" onclick="audioJsStartRecording()">
             <img src="img/record_btn_175.png"  >
         </a>
 
@@ -30,6 +30,11 @@
                 <p></p>
             </div>
         </div>
+
+        <br>
+        <audio id="audioMediaAudioPlayCtl" controls>
+            <source src="nosrc.wav" type="audio/wav">
+        </audio>
 
 
         <textarea id="audioJsDebugArea">

@@ -161,7 +161,7 @@ function audioJsRecordLaunch() {
     // Stop recording after 10 sec
     progressTimer = setInterval(function() {
         recTime = recTime + 1;
-        audioJsSetAudioPosition('audioRecordPos', recTime + " sec");
+        audioJsSetAudioPosition('audioRecPos', recTime + " sec");
         if (recTime >= 10)
             audioJsStopRecording();
         console.log("***test: interval-func()***");
@@ -195,14 +195,14 @@ function audioJsStopRecording() {
 
     msg = "audioJs: audioJsStopRecording(): Src attribute before dynamic set: ";
     $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-    msg =  $("#pocMediaAudioPlayCtl").attr("src")   ;
+    msg =  $("#audioMediaAudioPlayCtl").attr("src")   ;
     $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
 
-    $("#pocMediaAudioPlayCtl").attr("src", mediaFileFullName);
+    $("#audioMediaAudioPlayCtl").attr("src", mediaFileFullName);
 
     msg = "audioJs: audioJsStopRecording(): Src attribute after dynamic set: ";
     $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-    msg =  $("#pocMediaAudioPlayCtl").attr("src")   ;
+    msg =  $("#audioMediaAudioPlayCtl").attr("src")   ;
     $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
     audioJsSetButtonState(myMediaState.finishRec);
 

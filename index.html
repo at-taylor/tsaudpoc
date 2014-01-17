@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="css/jquery.mobile-1.3.2.min.css" />
     <link rel="stylesheet" href="css/jquery.mobile.theme-1.3.2.min.css" />
-
+    <link rel="stylesheet" href="css/audio.css" />
 
 
     <script>
@@ -61,6 +61,8 @@
 
         <a href="media.html" id="pocPageGoToMedia" data-role="button">Go to Media Example</a>
 
+        <a href="player.html" id="pocPageGoToPlayer" data-role="button">Go to jPlayer</a>
+
         <button id="pocPageRecordBtn">Start Record</button>
 
         <audio id="pocPageAudioCtl" controls>
@@ -73,6 +75,8 @@
         <audio id="pocPageAudioCtlStatic" controls>
             <source id="pocPageWavSrcStatic" src="nosrc.wav" type="audio/wav">
         </audio>
+        HI
+        <div id="pocPageProgressBar" class="audioProgressBar"><span id="pocPageProgressSpan" class="audioProgressSpan"></span></div>
 
         <input type="text" id="pocPageNetworkConn">
 
@@ -91,6 +95,7 @@
             }
 
             window.addEventListener("offline", function(e) {alert("offline");});
+            pocPageAudioCtlStatic.addEventListener("timeupdate", updateProgress, false);
 
             var msg =  "pocPage: attempting to set the static audio source.  current: " + $('#pocPageAudioCtlStatic').attr("src");
             console.log(msg);
@@ -101,6 +106,24 @@
             msg =  "pocPage: attempting to set the static audio source.  new: " + $('#pocPageAudioCtlStatic').attr("src")
             console.log(msg);
             $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+
+            function updateProgress() {
+                console.log("pocPage: in updateProgress()");
+
+
+                console.log("pocPage: updateProgress: currentTime: " + pocPageAudioCtlStatic.currentTime);
+                console.log("pocPage: updateProgress: duration: " + pocPageAudioCtlStatic.duration);
+
+                var progress = document.getElementById("pocPageProgressSpan");
+                console.log("pocPage: updateProgress: stylewidth: " + progress.style.width)    ;
+
+                var value = 0;
+                if (pocPageAudioCtlStatic.currentTime > 0) {
+                    value = Math.fl oor((100 / pocPageAudioCtlStatic.duration) * pocPageAudioCtlStatic.currentTime);
+                }
+                console.log("pocPage: updateProgress: computed value: " + value) ;
+                progress.style.width = value + "%";
+            }
 
             // Wait for PhoneGap to load
             //
@@ -126,29 +149,29 @@
                 console.log(msg);
                 $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
 
-                var networkState = navigator.connection.type;
-
-                setTimeout(function(){
-
-                    networkState = navigator.connection.type; // have to do this second time to pick up the refreshed value
-
-                    var states = {};
-                    states[Connection.UNKNOWN] = 'Unknown connection';
-                    states[Connection.ETHERNET] = 'Ethernet connection';
-                    states[Connection.WIFI] = 'WiFi connection';
-                    states[Connection.CELL_2G] = 'Cell 2G connection';
-                    states[Connection.CELL_3G] = 'Cell 3G connection';
-                    states[Connection.CELL_4G] = 'Cell 4G connection';
-                    states[Connection.CELL] = 'Cell generic connection';
-                    states[Connection.NONE] = 'No network connection';
-
-                    msg = "pocPage: onDeviceReady: trying a timeout delay";
-                    console.log(msg);
-                    $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
-
-                    alert('Connection type: ' + states[networkState]);
-
-                }, 500);
+//                var networkState = navigator.connection.type;
+//
+//                setTimeout(function(){
+//
+//                    networkState = navigator.connection.type; // have to do this second time to pick up the refreshed value
+//
+//                    var states = {};
+//                    states[Connection.UNKNOWN] = 'Unknown connection';
+//                    states[Connection.ETHERNET] = 'Ethernet connection';
+//                    states[Connection.WIFI] = 'WiFi connection';
+//                    states[Connection.CELL_2G] = 'Cell 2G connection';
+//                    states[Connection.CELL_3G] = 'Cell 3G connection';
+//                    states[Connection.CELL_4G] = 'Cell 4G connection';
+//                    states[Connection.CELL] = 'Cell generic connection';
+//                    states[Connection.NONE] = 'No network connection';
+//
+//                    msg = "pocPage: onDeviceReady: trying a timeout delay";
+//                    console.log(msg);
+//                    $('#pocPageDebugArea').val($('#pocPageDebugArea').val() + msg + '\n');
+//
+//                    alert('Connection type: ' + states[networkState]);
+//
+//                }, 500);
 
 //                msg = "pocPage: onDeviceReady: after network connection type";
 //                console.log(msg);

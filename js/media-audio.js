@@ -21,6 +21,27 @@ if(typeof console === "undefined") {
     console = { log: function() { } };
 }
 
+function audioCreateJPlayer(fileName) {
+
+
+    $("#jquery_jplayer_1").jPlayer({
+        ready: function (event) {
+            $(this).jPlayer("setMedia", {
+//                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
+//                        oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
+                wav: fileName
+            });
+        },
+        swfPath: "js",
+        //supplied: "m4a, oga",
+        supplied: "wav",
+        wmode: "window",
+        smoothPlayBar: true,
+        keyEnabled: true
+    });
+
+}
+
 function audioJsStartRecording() {
 
     var msg = "audioJs: audioJsStartRecording(): start";

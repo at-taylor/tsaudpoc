@@ -1,0 +1,93 @@
+<html>
+<head>
+</head>
+<body>
+
+<div data-role="page" id="pocCleanPage">
+
+    <div data-role="header">
+        Clean Media Test Page
+    </div> <!-- end of header div -->
+
+    <div data-role="content">
+
+        <a data-role="button" id="audioStartRecID" onclick="audioStartRecording()">
+            <img src="img/record_btn_175.png"  >
+        </a>
+
+        <a data-mini="true"  data-role="button" id="audioStopRecID" onclick="audioStopRecording()">
+            Stop
+        </a>
+
+        <div id="RecStatusID">
+            <div>
+                <p>Status:</p>
+            </div>
+        </div>
+        <div  id="media_rec_pos">
+            <div>
+                <p>Audio position: 0 sec</p>
+                <p></p>
+            </div>
+        </div>
+
+
+        <textarea id="pocCleanPageDebugArea">
+        </textarea>
+    </div>
+
+    <link rel="stylesheet" type="text/css" href="sam/css/index_main.less.css" class="main-less">
+    <link rel="stylesheet" type="text/css" href="sam/css/master.css">
+
+    <script type="text/javascript" src="sam/js/deviceCheck.js"></script>
+    <script type="text/javascript" src="sam/js/mediaHandlers.js"></script>
+
+    <script type="text/javascript">
+
+        $('#pocCleanPage').bind('pageinit', function(event) {
+
+            var msg = "pocCleanPage: pageinit(): start";
+            console.log(msg);
+            $('#pocCleanPageDebugArea').val($('#pocCleanPageDebugArea').val() + msg + '\n');
+
+            document.addEventListener("deviceready", onDeviceReadyCleanPage, false);
+
+            var msg = "pocCleanPage: pageinit(): end";
+            console.log(msg);
+            $('#pocCleanPageDebugArea').val($('#pocCleanPageDebugArea').val() + msg + '\n');
+        });
+
+        function onDeviceReadyCleanPage() {
+
+            var msg = "pocCleanPage: onDeviceReady(): start";
+            console.log(msg);
+
+            $('#pocCleanPageDebugArea').val(msg + '\n');
+
+            //document.getElementById("PhonegapVerID").innerHTML += window.device.cordova;
+            //console.log("onDeviceReady: " + document.getElementById("PhonegapVerID").innerHTML);
+            msg = "pocCleanPage: onDeviceReady(): onDeviceReady: " + window.device.cordova;
+            console.log(msg);
+            $('#pocCleanPageDebugArea').val($('#pocCleanPageDebugArea').val() + msg + '\n');
+
+            var devicePlatform = device.platform;
+            msg = "pocCleanPage: onDeviceReady(): Platform: " +    devicePlatform;
+            console.log(msg);
+            $('#pocCleanPageDebugArea').val($('#pocCleanPageDebugArea').val() + msg + '\n');
+
+            //console.log("*** phoneCheck.android: " + phoneCheck.android);
+            //console.log("*** phoneCheck.ios: " + phoneCheck.ios);
+
+            // set initial button state
+            audioSetButtonState(myMediaState.start);
+
+            // check if an existing media file already exist and reset button state
+            checkMediaRecFileExist();
+        }
+
+    </script>
+
+</div> <!-- end of page div -->
+
+</body>
+</html>

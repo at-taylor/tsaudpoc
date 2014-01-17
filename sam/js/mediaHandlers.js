@@ -12,7 +12,7 @@ var recTime = 0;
 
 // for recording: do not specify any directory
 var mediaFileFullName = null; 
-var mediaRecFile = "myRecording100.wav";
+var mediaRecFile = "myRecording.wav";
 var checkFileOnly = false;
 var mediaFileExist = false;
 var myMediaState = {start: 1, 
@@ -45,18 +45,39 @@ function onOK_GetFile(fileEntry) {
     //if (phoneCheck.ios)
         mediaRecFile = mediaFileFullName;
 
-    if (checkFileOnly == true) { // check if file exist at app launch. 
+    if (checkFileOnly == true) { // check if file exist at app launch.
+
+        msg = "pocMediaPage: onOK_GetFile(): checkFileOnly==true";
+        console.log(msg);
+        $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
         mediaFileExist = true;
         
         setButtonState(myMediaState.finishRec);
+
+        msg = "pocMediaPage: onOK_GetFile(): checkFileOnly==true: after setButtonState(finish)";
+        console.log(msg);
+        $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
     } 
     else { // record on iOS
-        
+
+        msg = "pocMediaPage: onOK_GetFile(): checkFileOnly==false: start";
+        console.log(msg);
+        $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
         // create media object using full media file name 
         my_recorder = new Media(mediaRecFile, onMediaCallSuccess, onMediaCallError);
 
+        msg = "pocMediaPage: onOK_GetFile(): checkFileOnly==false: about to call recordNow()";
+        console.log(msg);
+        $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
         // specific for iOS device: recording start here in call-back function
         recordNow();
+
+        msg = "pocMediaPage: onOK_GetFile(): checkFileOnly==false: end";
+        console.log(msg);
+        $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
     }
 
     msg = "pocMediaPage: onOK_GetFile(): end";
@@ -316,8 +337,18 @@ function clearProgressTimmer() {
 }
 // Media() success callback        
 function onMediaCallSuccess() {
+
+    msg = "pocMediaPage: onMediaCallSuccess(): start";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
     createdStatus = true;
     console.log("***test: new Media() succeeded ***");
+
+    msg = "pocMediaPage: onMediaCallSuccess(): end";
+    console.log(msg);
+    $('#pocMediaPageDebugArea').val($('#pocMediaPageDebugArea').val() + msg + '\n');
+
 }
 // Media() error callback        
 function onMediaCallError(error) {

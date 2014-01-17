@@ -106,27 +106,12 @@
 
             document.addEventListener("deviceready", onDeviceReadyCleanPage, false);
 
-            msg = "pocCleanPage: pageinit(): create the JPlayer";
+            msg = "pocCleanPage: pageinit(): create the JPlayer thru f(x)";
             console.log(msg);
             $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
 
+            audioCreateJPlayer("none.wav");
             //audioCreateJPlayer("G2MTestSound.wav");
-
-            $("#jquery_jplayer_1").jPlayer({
-                ready: function (event) {
-                    $(this).jPlayer("setMedia", {
-//                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
-//                        oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
-                        wav: "G2MTestSound.wav"
-                    });
-                },
-                swfPath: "js",
-                //supplied: "m4a, oga",
-                supplied: "wav",
-                wmode: "window",
-                smoothPlayBar: true,
-                keyEnabled: true
-            });
 
             msg = "pocCleanPage: pageinit(): end";
             console.log(msg);

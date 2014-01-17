@@ -23,6 +23,9 @@ if(typeof console === "undefined") {
 
 function audioCreateJPlayer(fileName) {
 
+    var msg = "audioJs: audioCreateJPlayer(): start called with: " + fileName;
+    console.log(msg);
+    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
 
     $("#jquery_jplayer_1").jPlayer({
         ready: function (event) {
@@ -39,6 +42,30 @@ function audioCreateJPlayer(fileName) {
         smoothPlayBar: true,
         keyEnabled: true
     });
+
+    msg = "audioJs: audioCreateJPlayer(): end called with: " fileName;
+    console.log(msg);
+    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+
+}
+
+function audioSetPlayerFileName(playerName, fileName) {
+
+    var msg = "audioJs: audioSetPlayerFileName(): start called with: Player: " + playerName + " File: " + fileName;
+    console.log(msg);
+    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+
+    var fullPlayerName = '#' + playerName;
+    $(fullPlayerName).jPlayer("setMedia", {
+//                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
+//                        oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
+        wav: fileName
+    });
+
+
+    msg = "audioJs: audioSetPlayerFileName(): end called with: " + fileName;
+    console.log(msg);
+    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
 
 }
 
@@ -221,6 +248,7 @@ function audioJsStopRecording() {
 
 
     $("#audioMediaAudioPlayCtl").attr("src", mediaFileFullName);
+    audioSetPlayerFileName('jquery_jplayer_1', mediaFileFullName);
 
 
     msg = "audioJs: audioJsStopRecording(): Src attribute after dynamic set: ";

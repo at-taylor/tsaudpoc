@@ -198,12 +198,15 @@ function audioJsStopRecording() {
     msg =  $("#audioMediaAudioPlayCtl").attr("src")   ;
     $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
 
+
     $("#audioMediaAudioPlayCtl").attr("src", mediaFileFullName);
+
 
     msg = "audioJs: audioJsStopRecording(): Src attribute after dynamic set: ";
     $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
     msg =  $("#audioMediaAudioPlayCtl").attr("src")   ;
     $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+
     audioJsSetButtonState(myMediaState.finishRec);
 
     if (my_recorder)

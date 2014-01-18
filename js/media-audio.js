@@ -1,5 +1,5 @@
 //  parms
-var audioIsJPlayer = "false";
+var audioIsJPlayer = "true";
 
 // control set
 var audioStartRecFieldId= null;
@@ -51,7 +51,7 @@ function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlay
     audioRecordStatusCounterDiv = _audioRecordStatusCounterDiv;
 
     if (audioIsJPlayer == "true")
-        audioJsCreateJPlayer("G2MTestSound.wav");
+        audioJsCreateJPlayer("no.wav");
 
     audioJsSetButtonState(audioStateEnum.start);
 

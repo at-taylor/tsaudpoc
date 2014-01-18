@@ -45,7 +45,7 @@ function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlay
     audioRecordStatusDiv = _audioRecordStatusDiv;
     audioRecordStatusCounterDiv = _audioRecordStatusCounterDiv;
 
-    audioJsCreateJPlayer("none.wav");
+    audioJsCreateJPlayer("G2MTestSound.wav");
 
     audioJsSetButtonState(audioStateEnum.start);
 

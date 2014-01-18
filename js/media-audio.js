@@ -12,6 +12,7 @@ var audioRecordStatusCounterDiv=null;
 
 // 'prviate' instance variables
 var audioRecorder = null;
+var audioPlayer = null;
 var progressTimer = null;
 var recTime = 0;
 var mediaFileFullName = null;
@@ -55,6 +56,47 @@ function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlay
     audioJsSetButtonState(audioStateEnum.start);
 
     audioLogLine("audioRecordApp: initialize(): end: audioStart: " + audioStartRecFieldId);
+}
+
+function playMusic() {
+
+    audioLogLine("audioRecordApp: playMusic: start");
+    if (audioPlayer === null) { // play existing media recorded from previous session
+       audioPlayer = new Media(mediaFileFullName, null,null);
+    }
+
+    // Play audio
+    if (audioPlayer) {
+        audioPlayer.play();
+
+//        document.getElementById('PlayStatusID').innerHTML = "<p></p>Status: playing...";
+//
+//        setButtonState(myMediaState.playback);
+//
+//        // Update media position every second
+//        clearProgressTimmer();
+//        progressTimmer = setInterval(function () {
+//            // get my_player position
+//            my_player.getCurrentPosition(
+//                // success callback
+//                function (position) {
+//                    if (position >= 0)
+//                        setAudioPosition('media_pos', (position) + " sec");
+//                    else {
+//                        // reached end of media: same as clicked stop-music
+//                        clearProgressTimmer();
+//                        setAudioPosition('media_pos', "0 sec");
+//                        document.getElementById('PlayStatusID').innerHTML = "<p>Status: stopped<\p>";
+//                        setButtonState(myMediaState.stopped);
+//                    }
+//                },
+//                // error callback
+//                function (e) {
+//                    document.getElementById('PlayStatusID').innerHTML = "<p></p>Status: Error on getting position - " + e;
+//                    setAudioPosition("Error: " + e);
+//                });
+//        }, 1000);
+    }
 }
 
 function audioJsCreateJPlayer(fileName) {

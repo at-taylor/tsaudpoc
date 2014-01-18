@@ -11,13 +11,13 @@
 
     <div data-role="content">
 
-        <button id="audioChangeFileBtn" onclick="audioSwitchFile()">Set File</button>
+        <button id="audioChangeFileBtn" onclick="audioJsSwitchFile()">Set File</button>
 
-        <a id="audioStartRecID" onclick="audioRecordApp.startRecording()">
+        <a id="audioStartRecID" onclick="audioJsStartRecording()">
             <img src="img/record_btn_175.png"  >
         </a>
 
-        <a data-mini="true"  data-role="button" id="audioStopRecID" onclick="audioRecordApp.stopRecording()">
+        <a data-mini="true"  data-role="button" id="audioStopRecID" onclick="audioJsStopRecording()">
             Stop
         </a>
 
@@ -96,7 +96,7 @@
 
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
 
-    <script type="text/javascript" src="js/media-audio-rec.js"></script>
+    <script type="text/javascript" src="js/media-audio.js"></script>
 
     <script type="text/javascript">
 
@@ -112,24 +112,25 @@
             console.log(msg);
             $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
 
-            //audioCreateJPlayer("none.wav");
+
             //audioCreateJPlayer("G2MTestSound.wav");
-            $("#jquery_jplayer_1").jPlayer({
-                ready: function (event) {
-                    $(this).jPlayer("setMedia", {
-//                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
-//                        oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
-                        wav: "none.wav"
-                    });
-                },
-                swfPath: "js",
-                //supplied: "m4a, oga",
-                supplied: "wav",
-                wmode: "window",
-                smoothPlayBar: true,
-                keyEnabled: true
-            });
-            audioRecordApp.initialize("audioStartRecID", "audioStopRecID", "jquery_jplayer_1", "audioRecStatusID", "audioRecPos","audioJsDebugArea");
+//            $("#jquery_jplayer_1").jPlayer({
+//                ready: function (event) {
+//                    $(this).jPlayer("setMedia", {
+////                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
+////                        oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
+//                        wav: "none.wav"
+//                    });
+//                },
+//                swfPath: "js",
+//                //supplied: "m4a, oga",
+//                supplied: "wav",
+//                wmode: "window",
+//                smoothPlayBar: true,
+//                keyEnabled: true
+//            });
+            //audioRecordApp.initialize("audioStartRecID", "audioStopRecID", "jquery_jplayer_1", "audioRecStatusID", "audioRecPos","audioJsDebugArea");
+            audioInitialize("audioStartRecID", "audioStopRecID", "jquery_jplayer_1", "audioRecStatusID", "audioRecPos","audioJsDebugArea");
 
             msg = "pocCleanPage: pageinit(): end";
             console.log(msg);

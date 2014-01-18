@@ -63,7 +63,8 @@ var audioRecordApp = {
         this.logLine("audioRecordApp: bindEvents(): end");
     },
 
-    startRecording: function () {
+    startRecording: function() {
+
 
         function launchRecording() {
             this.logLine("audioRecordApp: startRecording.launchRecording start");
@@ -145,8 +146,8 @@ var audioRecordApp = {
 
         window.requestFileSystem(LocalFileSystem.PERSISTENT, 0
             , function () {
-                this.logLine("in the filesystem inline")         ;
-                fileSystem.root.getFile(objRef.mediaRecFile, { create: true, exclusive: false }, onSuccessGetAudioFile(objRef), onFailFileSystem(objRef)) ;
+                this.logLine("in the filesystem inline:" + this.mediaRecFile)         ;
+                fileSystem.root.getFile(this.mediaRecFile, { create: true, exclusive: false }, onSuccessGetAudioFile(objRef), onFailFileSystem(objRef)) ;
             }
             , onFailFileSystem(this));
 
@@ -156,6 +157,7 @@ var audioRecordApp = {
 
 
     stopRecording: function() {
+
 
         function clearAudioTimer(objRef) {
 

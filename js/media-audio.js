@@ -1,33 +1,62 @@
 
+// control set
+var audioStartRecFieldId= null;
+var audioStopRecFieldId=null;
+var audioPlayerFieldId=null;
+var audioDebugFieldId=null;
+var audioRecordStatusDiv=null;
+var audioRecordStatusCounterDiv=null;
 
-var my_recorder = null
+// 'prviate' instance variables
+var audioRecorder = null;
 var progressTimer = null;
 var recTime = 0;
-
-// for recording: do not specify any directory
 var mediaFileFullName = null;
+
+// const
+var audioStateEnum= {start: 1,
+                    recording: 2,
+                    finishRec: 3
+                    }
+var audioMaxRecordSecs =  900;  // maximum is 15 minutes
 var mediaRecFile = "myRecording.wav";
 
-var myMediaState = {start: 1,
-    recording: 2,
-    finishRec: 3
-//    playback: 4,
-//    paused: 5,
-//    stopped: 6
-    };
+function audioLogLine(msg) {
 
-/* console.log et al are not always available in Firefox. This silences it and prevents a JS error. */
-if(typeof console === "undefined") {
-    console = { log: function() { } };
+    console.log(msg);
+    $('#'+audioDebugFieldId).val($('#'+ audioDebugFieldId).val() + msg + '\n');
 }
 
-function audioCreateJPlayer(fileName) {
+function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlayerFieldId,
+         _audioRecordStatusDiv, _audioRecordStatusCounterDiv, _audioDebugFieldId) {
 
-    var msg = "audioJs: audioCreateJPlayer(): start called with: " + fileName;
-    console.log(msg);
-    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+   audioDebugFieldId = _audioDebugFieldId;
 
-    $("#jquery_jplayer_1").jPlayer({
+    audioLogLine( "audioRecordApp: initialize(): start: audioStart: " + _audioStartRecFieldId);
+
+    audioRecorder = null;
+    progressTimer = null;
+    recTime = null;
+    mediaFileFullName = null;
+
+    audioStartRecFieldId = _audioStartRecFieldId;
+    audioStopRecFieldId = _audioStopRecFieldId;
+    audioPlayerFieldId = _audioPlayerFieldId;
+    audioRecordStatusDiv = _audioRecordStatusDiv;
+    audioRecordStatusCounterDiv = _audioRecordStatusCounterDiv;
+
+    audioJsCreateJPlayer("none.wav");
+
+    audioJsSetButtonState(audioStateEnum.start);
+
+    audioLogLine("audioRecordApp: initialize(): end: audioStart: " + audioStartRecFieldId);
+}
+
+function audioJsCreateJPlayer(fileName) {
+
+    audioLogLine("audioJs: audioCreateJPlayer(): start called with: " + fileName + " JPlayer control field: " + audioPlayerFieldId);
+
+    $('#'+audioPlayerFieldId).jPlayer({
         ready: function (event) {
             $(this).jPlayer("setMedia", {
 //                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
@@ -43,30 +72,23 @@ function audioCreateJPlayer(fileName) {
         keyEnabled: true
     });
 
-    msg = "audioJs: audioCreateJPlayer(): end called with: " + fileName;
-    console.log(msg);
-    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioCreateJPlayer(): end called with: " + fileName);
 
 }
 
-function audioSwitchFile() {
+function audioJsSwitchFile() {
 
-    var msg = "audioJs: audioSwitchFile(): start";
-    console.log(msg);
-    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioSwitchFile(): start");
 
-    audioSetPlayerFileName('jquery_jplayer_1', "G2MTestSound.wav");
+    audioSetPlayerFileName(audioPlayerFieldId, "G2MTestSound.wav");
 
-    msg = "audioJs: audioSwitchFile(): end";
-    console.log(msg);
-    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioSwitchFile(): end");
+
 }
 
 function audioSetPlayerFileName(playerName, fileName) {
 
-    var msg = "audioJs: audioSetPlayerFileName(): start called with: Player: " + playerName + " File: " + fileName;
-    console.log(msg);
-    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioSetPlayerFileName(): start called with: Player: " + playerName + " File: " + fileName);
 
     var fullPlayerName = '#' + playerName;
     $(fullPlayerName).jPlayer("setMedia", {
@@ -75,168 +97,89 @@ function audioSetPlayerFileName(playerName, fileName) {
         wav: fileName
     });
 
-
-    msg = "audioJs: audioSetPlayerFileName(): end called with: " + fileName;
-    console.log(msg);
-    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
-
+    audioLogLine( "audioJs: audioSetPlayerFileName(): end called with: " + fileName);
 }
 
 function audioJsStartRecording() {
 
-    var msg = "audioJs: audioJsStartRecording(): start";
-    console.log(msg);
-    $('#audioJsDebugArea').val( $('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsStartRecording(): start");
 
     // change buttons state
-    audioJsSetButtonState(myMediaState.recording);
+    audioJsSetButtonState(audioStateEnum.recording);
 
     // create media object - overwrite existing recording
-    if (my_recorder)
-        my_recorder.release();
+    if (audioRecorder)
+        audioRecorder.release();
 
     //first create the file   then the success handler will launch recording to the file
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, audioJsOnSuccessContinueRecordingInit, function() {
-        console.log("***test: failed in creating media file in requestFileSystem");
-        msg = "audioJs: audioJsStartRecording(): failed in requestFileSystem call";
-        console.log(msg);
-        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+        audioLogLine("audioJs: audioJsStartRecording(): failed in requestFileSystem call");
     });
 
-    msg = "audioJs: audioJsStartRecording(): end";
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-
+    audioLogLine("audioJs: audioJsStartRecording(): end");
 }
 
 function audioJsOnSuccessContinueRecordingInit(fileSystem) {
-    console.log("***test: fileSystem.root.name: " + fileSystem.root.name);
 
-    var msg = "audioJs: audioJsOnSuccessContinueRecordingInit(): start";
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsOnSuccessContinueRecordingInit(): start");
+    audioLogLine("audioJs: audioJsOnSuccessContinueRecordingInit(): Root File System Name: " + fileSystem.root.name);
 
-    msg = "audioJs: audioJsOnSuccessContinueRecordingInit(): Root File System Name: " + fileSystem.root.name;
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-
-
-//    if (checkFileOnly == true)
-//        fileSystem.root.getFile(mediaRecFile, { create: false, exclusive: false }, onOK_GetFile, onFail_GetFile);
-//    else
-    fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, audioJsonSuccessCompleteRecordingInit, function() {
-        msg = "audioJs: audioJsOnSuccessContinueRecordingInit(): failed in getFile() call";
-        console.log(msg);
-        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    fileSystem.root.getFile(mediaRecFile, { create: true, exclusive: false }, audioJsOnSuccessCompleteRecordingInit, function() {
+        audioLogLine("audioJs: audioJsOnSuccessContinueRecordingInit(): failed in getFile() call");
     });
 
-    msg = "audioJs: audioJsOnSuccessContinueRecordingInit(): end";
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-
+    audioLogLine("audioJs: audioJsOnSuccessContinueRecordingInit(): end");
 }
 
-function audioJsonSuccessCompleteRecordingInit(fileEntry) {
-    console.log("***test: File " + mediaRecFile + " at " + fileEntry.fullPath);
+function audioJsOnSuccessCompleteRecordingInit(fileEntry) {
 
-    var msg = "audioJs: audioJsonSuccessCompleteRecordingInit(): start";
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-
-    msg = "audioJs: audioJsonSuccessCompleteRecordingInit(): File Name: " + mediaRecFile + " at " + fileEntry.fullPath;
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsonSuccessCompleteRecordingInit(): start");
+    audioLogLine( "audioJs: audioJsonSuccessCompleteRecordingInit(): File Name: " + mediaRecFile + " at " + fileEntry.fullPath);
 
     // save the full file name
     mediaFileFullName = fileEntry.fullPath;
-    //if (phoneCheck.ios)
     mediaRecFile = mediaFileFullName;
-//
-//    if (checkFileOnly == true) { // check if file exist at app launch.
-//
-//        msg = "audioJs: onOK_GetFile(): checkFileOnly==true";
-//        console.log(msg);
-//        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-//
-//        mediaFileExist = true;
-//
-//        audioJsSetButtonState(myMediaState.finishRec);
-//
-//        msg = "audioJs: onOK_GetFile(): checkFileOnly==true: after audioJsSetButtonState(finish)";
-//        console.log(msg);
-//        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-//    }
-//    else { // record on iOS
 
-        msg = "audioJs: audioJsonSuccessCompleteRecordingInit(): about the create Media object";
-        console.log(msg);
-        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsonSuccessCompleteRecordingInit(): about the create Media object");
+    // create media object using full media file name
+    audioRecorder = new Media(mediaRecFile, function() {
+       audioLogLine("audioJs: audioJsonSuccessCompleteRecordingInit(): Media Object Create: success");
+    }, function() {
+        audioLogLine("audioJs: audioJsonSuccessCompleteRecordingInit(): Media Object Create: fail");
+    });
 
-        // create media object using full media file name
-        my_recorder = new Media(mediaRecFile, function() {
-            msg = "audioJs: audioJsonSuccessCompleteRecordingInit(): Media Object Create: success";
-            console.log(msg);
-            $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-        }, function() {
-            msg = "audioJs: audioJsonSuccessCompleteRecordingInit(): Media Object Create: fail";
-            console.log(msg);
-            $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-        });
+    // specific for iOS device: recording start here in call-back function
+    audioJsRecordLaunch();
 
-        msg = "audioJs: audioJsonSuccessCompleteRecordingInit(): media Object Created: about to call audioJsRecordLaunch()";
-        console.log(msg);
-        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsonSuccessCompleteRecordingInit(): end");
 
-        // specific for iOS device: recording start here in call-back function
-        audioJsRecordLaunch();
-
-    msg = "audioJs: audioJsonSuccessCompleteRecordingInit(): end";
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
 }
 
 function audioJsRecordLaunch() {
 
-    msg = "audioJs: audioJsRecordLaunch(): start";
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-    
-    if (my_recorder) {
-        my_recorder.startRecord();
-        document.getElementById('audioRecStatusID').innerHTML = "Status: recording";
-        //console.log("***test:  recording started: in audioJsStartRecording()***");
-        msg = "audioJs: audioJsRecordLaunch(): my_recorder.startRecord()";
-        console.log(msg);
-        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsRecordLaunch(): start");
+
+    if (audioRecorder) {
+        audioRecorder.startRecord();
+        document.getElementById(audioRecordStatusDiv).innerHTML = "Recording .....";
+        audioLogLine("audioJs: audioJsRecordLaunch(): recorder.startRecord()");
     }
     else   {
         //console.log("***test:  my_recorder==null: in audioJsStartRecording()***");
-        msg = "audioJs: audioJsRecordLaunch(): my_recorder.startRecord(): NULL RECORDER";
-        console.log(msg);
-        $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+        audioLogLine("audioJs: audioJsRecordLaunch(): recorder.startRecord(): NULL RECORDER");
     }
 
     // reset the recTime every time when recording
     recTime = 0;
-
     // Stop recording after 10 sec
     progressTimer = setInterval(function() {
         recTime = recTime + 1;
-        audioJsSetAudioPosition('audioRecPos', recTime + " sec");
-        if (recTime >= 10)
+        document.getElementById(audioRecordStatusCounterDiv).innerHTML = "<p></p>Recording Length: "+ recTime + " sec";
+        if (recTime >= audioMaxRecordSecs)
             audioJsStopRecording();
-        console.log("***test: interval-func()***");
     }, 1000);
 
-    msg = "audioJs: audioJsRecordLaunch(): end";
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-}
-
-// Set audio position
-//
-function audioJsSetAudioPosition(audioPosID, position) {
-    document.getElementById(audioPosID).innerHTML = "<p></p>Audio position: "+position;
+    audioLogLine("audioJs: audioJsRecordLaunch(): end");
 }
 
 function audioJsClearProgressTimer() {
@@ -251,91 +194,45 @@ function audioJsClearProgressTimer() {
 function audioJsStopRecording() {
     // enable "record" button but disable "stop"
 
-    var msg = "audioJs: audioJsStopRecording(): start. ";
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsStopRecording(): start. ");
 
-    msg = "audioJs: audioJsStopRecording(): Src attribute before dynamic set: ";
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-    msg =  $("#audioMediaAudioPlayCtl").attr("src")   ;
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    //$("#audioMediaAudioPlayCtl").attr("src", mediaFileFullName);
+    audioSetPlayerFileName(audioPlayerFieldId, mediaFileFullName);
 
+    audioJsSetButtonState(audioStateEnum.finishRec);
 
-    $("#audioMediaAudioPlayCtl").attr("src", mediaFileFullName);
-    audioSetPlayerFileName('jquery_jplayer_1', mediaFileFullName);
-
-
-    msg = "audioJs: audioJsStopRecording(): Src attribute after dynamic set: ";
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-    msg =  $("#audioMediaAudioPlayCtl").attr("src")   ;
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-
-    audioJsSetButtonState(myMediaState.finishRec);
-
-    if (my_recorder)
-        my_recorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
+    if (audioRecorder)
+        audioRecorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
 
     audioJsClearProgressTimer();
 
-    document.getElementById('audioRecStatusID').innerHTML = "<p>Status: stopped record</p>";
-    console.log("***test: recording stopped***");
+    document.getElementById(audioRecordStatusDiv).innerHTML = "<p>Recording stopped.</p>";
 
-    var msg = "audioJs: audioJsStopRecording(): end. ";
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
+    audioLogLine("audioJs: audioJsStopRecording(): end. ");
 }
 
-function audioJsSetButtonState(curState)
+function audioJsSetButtonState(targetState)
 {
-    var msg = "audioJs: mediaHandlers: audioJsSetButtonState: start.  called with: " + curState;
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
 
-    var id_disabled_map = {
-        "audioStartRecID":false,
-        "audioStopRecID":true
-//        "startPlayID":true,
-//        "pausePlayID":true,
-//        "stopPlayID":true
-    };
+    audioLogLine("audioRecordApp: setButtonState(): start: state requested: " + targetState);
 
-    if (curState == myMediaState.start) // only "record" is enabled
+    if (targetState == audioStateEnum.start) // only "record" is enabled
     {
-        console.log("***test:  start state #####");
+        $('#'+audioStartRecFieldId).removeClass('ui-disabled') ;
+        $('#'+audioStopRecFieldId).addClass('ui-disabled') ;
+
     }
-    else if (curState == myMediaState.recording) // only "stoprec" is enabled
+    else if (targetState == audioStateEnum.recording) // only "stoprec" is enabled
     {
-        console.log("***test:  recording state #####");
-        id_disabled_map["audioStartRecID"] = true;
-        id_disabled_map["audioStopRecID"] = false;
+        $('#'+audioStartRecFieldId).addClass('ui-disabled') ;
+        $('#'+audioStopRecFieldId).removeClass('ui-disabled') ;
     }
-    else if ((curState == myMediaState.finishRec) ||
-        (curState == myMediaState.stopped)) // only "record", "play" are enabled
+    else if (targetState == this.audioStateEnum.finishRec)      // this could be used to enable a remove or restart button
     {
-        console.log("***test:  finishing/stopped state #####");
-       // id_disabled_map["audioStartPlayID"] = false;
-    }
-//    else if (curState == myMediaState.playback)  // only "pause", "stop" are enabled
-//    {
-//        console.log("***test:  playback state #####");
-//        id_disabled_map["startRecID"] = true;
-//        id_disabled_map["startPlayID"] = true;
-//    }
-//    else if (curState == myMediaState.paused)  // only "play", "record" & "stop" are enabled
-//    {
-//        console.log("***test:  paused state #####");
-//        id_disabled_map["startPlayID"] = false;
-//        id_disabled_map["stopPlayID"] = false;
-//    }
-    else
-    {
-        console.log("***  unknown media state");
+        $('#'+audioStartRecFieldId).removeClass('ui-disabled') ;
+        $('#'+audioStopRecFieldId).addClass('ui-disabled') ;
     }
 
-    var keys = Object.keys(id_disabled_map); //the list of ids: ["startRecID", "stopRecID",...]
-    keys.forEach(function(id){ document.getElementById(id).disabled = id_disabled_map[id];});
+    audioLogLine("audioRecordApp: setButtonState(): end: state requested: " + targetState);
 
-    var msg = "audioJs: mediaHandlers: audioJsSetButtonState: end.  called with: " + curState;
-    console.log(msg);
-    $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
-
-    return(id_disabled_map);
 }

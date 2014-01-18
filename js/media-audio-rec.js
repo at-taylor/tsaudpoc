@@ -64,6 +64,73 @@ var audioRecordApp = {
     },
 
     startRecording: function () {
+
+        function launchRecording() {
+            this.logLine("audioRecordApp: startRecording.launchRecording start");
+
+            if (this.audioRecorder) {
+                this.audioRecorder.startRecord();
+                document.getElementById(this.audioRecordStatusDiv).innerHTML = "Recording ....";
+                //console.log("***test:  recording started: in audioJsStartRecording()***");
+            }
+            else   {
+                //console.log("***test:  my_recorder==null: in audioJsStartRecording()***");
+                this.logLine("audioRecordApp: startRecording.launchRecording: NULL RECORDER");
+            }
+
+            // reset the recTime every time when recording
+            this.recTime = 0;
+            // Stop recording after 10 sec
+            this.progressTimer = setInterval(function() {
+                this.recTime = this.recTime + 1;
+                setAudioCounter(this.audioRecordStatusCounterDiv, this.recTime + " sec");
+                if (this.recTime >= this.audioMaxRecordSecs)
+                    this.stopRecording();
+            }, 1000);
+
+            this.logLine("audioRecordApp: startRecording.launchRecording end");
+        }
+        function onSuccessFileSystem(objRef, fileSystem) {
+
+            objRef.logLine("audioRecordApp: startRecording.onSuccessFileSystem(): start");
+            //objRef.logLine("audioRecordApp: startRecording.onSuccessFileSystem(): Root File System Name: " + fileSystem.root.name);
+
+
+            fileSystem.root.getFile(objRef.mediaRecFile, { create: true, exclusive: false }, onSuccessGetAudioFile(objRef), onFailFileSystem(objRef)) ;
+
+            objRef.logLine("audioRecordApp: startRecording.onSuccessFileSystem(): end");
+        }
+        function onFailFileSystem(objRef, evt) {
+            console.log(evt.target.error.code);
+            objRef.logLine("audioRecordApp: startRecording(): failed in requestFileSystem call");
+        }
+
+        function onSuccessGetAudioFile(objRef, fileEntry) {
+
+            objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile:  File Name: " +objRef.mediaRecFile + " at " + fileEntry.fullPath);
+
+            // save the full file name
+            objRef.mediaFileFullName = fileEntry.fullPath;
+            objRef.mediaRecFile = mediaFileFullName;
+
+            // create media object using full media file name
+//            objRef.audioRecorder = new Media(objRef.mediaRecFile, function() {
+//                objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile Media Object Create: success");
+//            }, function() {
+//                objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile Media Object Create: fail");
+//            });
+
+            // specific for iOS device: recording start here in call-back function
+            //launchRecording();
+
+            objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile: end");
+        }
+
+        function setAudioCounter(audioCounterID, position) {
+
+            document.getElementById(audioCounterID).innerHTML = "<p></p> "+position;
+        }
+
         this.logLine("audioRecordApp: startRecording(): start");
         // change buttons state
         this.setButtonState(this.audioStateEnum.recording);
@@ -74,6 +141,7 @@ var audioRecordApp = {
 //
 //        //first create the file   then the success handler will launch recording to the file
 //        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem(), onFailFileSystem());
+        onSuccessFileSystem(this, "filesystem");
         this.logLine("audioRecordApp: startRecording(): end");
     },
 

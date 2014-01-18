@@ -13,11 +13,11 @@
 
         <button id="audioChangeFileBtn" onclick="audioSwitchFile()">Set File</button>
 
-        <a id="audioStartRecID" onclick="audioJsStartRecording()">
+        <a id="audioStartRecID" >
             <img src="img/record_btn_175.png"  >
         </a>
 
-        <a data-mini="true"  data-role="button" id="audioStopRecID" onclick="audioJsStopRecording()">
+        <a data-mini="true"  data-role="button" id="audioStopRecID" >
             Stop
         </a>
 
@@ -28,7 +28,7 @@
         </div>
         <div  id="audioRecPos">
             <div>
-                <p>Audio position: 0 sec</p>
+                <p>Recording Length: 0 sec</p>
                 <p></p>
             </div>
         </div>
@@ -72,15 +72,15 @@
                         </ul>
                     </div>
                 </div>
-                <div class="jp-title">
-                    <ul>
-                        <li>Wav</li>
-                    </ul>
-                </div>
-                <div class="jp-no-solution">
-                    <span>Update Required</span>
-                    To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                </div>
+                <!--<div class="jp-title">-->
+                    <!--<ul>-->
+                        <!--<li>Wav</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="jp-no-solution">-->
+                    <!--<span>Update Required</span>-->
+                    <!--To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.-->
+                <!--</div>-->
             </div>
         </div>
 
@@ -96,7 +96,7 @@
 
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
 
-    <script type="text/javascript" src="js/media-audio.js"></script>
+    <script type="text/javascript" src="js/media-audio-rec.js"></script>
 
     <script type="text/javascript">
 
@@ -112,8 +112,24 @@
             console.log(msg);
             $('#audioJsDebugArea').val($('#audioJsDebugArea').val() + msg + '\n');
 
-            audioCreateJPlayer("none.wav");
+            //audioCreateJPlayer("none.wav");
             //audioCreateJPlayer("G2MTestSound.wav");
+            $("#jquery_jplayer_1").jPlayer({
+                ready: function (event) {
+                    $(this).jPlayer("setMedia", {
+//                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
+//                        oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
+                        wav: "none.wav"
+                    });
+                },
+                swfPath: "js",
+                //supplied: "m4a, oga",
+                supplied: "wav",
+                wmode: "window",
+                smoothPlayBar: true,
+                keyEnabled: true
+            });
+            audioRecordApp.initialize("audioStartRecID", "audioStopRecID", "jquery_jplayer_1", "audioJsDebugArea");
 
             msg = "pocCleanPage: pageinit(): end";
             console.log(msg);
@@ -142,7 +158,7 @@
             //console.log("*** phoneCheck.ios: " + phoneCheck.ios);
 
             // set initial button state
-            audioJsSetButtonState(myMediaState.start);
+            //audioJsSetButtonState(myMediaState.start);
 
             // check if an existing media file already exist and reset button state
             //checkMediaRecFileExist();

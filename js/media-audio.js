@@ -175,8 +175,8 @@ function audioJsRecordLaunch() {
     progressTimer = setInterval(function() {
         recTime = recTime + 1;
         document.getElementById(audioRecordStatusCounterDiv).innerHTML = "<p></p>Recording Length: "+ recTime + " sec";
-        if (recTime >= audioMaxRecordSecs)
-            audioJsStopRecording();
+//        if (recTime >= audioMaxRecordSecs)
+//            audioJsStopRecording();
     }, 1000);
 
     audioLogLine("audioJs: audioJsRecordLaunch(): end");
@@ -196,13 +196,13 @@ function audioJsStopRecording() {
 
     audioLogLine("audioJs: audioJsStopRecording(): start. ");
 
+    if (audioRecorder)
+        audioRecorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
+
     //$("#audioMediaAudioPlayCtl").attr("src", mediaFileFullName);
     audioSetPlayerFileName(audioPlayerFieldId, mediaFileFullName);
 
     audioJsSetButtonState(audioStateEnum.finishRec);
-
-    if (audioRecorder)
-        audioRecorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
 
     audioJsClearProgressTimer();
 

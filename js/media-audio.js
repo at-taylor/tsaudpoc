@@ -221,7 +221,7 @@ function audioJsRecordLaunch() {
     // Stop recording after 10 sec
     progressTimer = setInterval(function() {
         recTime = recTime + 1;
-        document.getElementById(audioRecordStatusCounterDiv).innerHTML = "<p></p>Recording Length: "+ recTime + " sec";
+        document.getElementById(audioRecordStatusCounterDiv).innerHTML = "Recording Length: "+ recTime + " sec";
 //        if (recTime >= audioMaxRecordSecs)
 //            audioJsStopRecording();
     }, 1000);
@@ -259,7 +259,7 @@ function audioJsStopRecording() {
 
     audioJsClearProgressTimer();
 
-    document.getElementById(audioRecordStatusDiv).innerHTML = "<p>Recording stopped.</p>";
+    document.getElementById(audioRecordStatusDiv).innerHTML = "Recording stopped.";
 
     audioLogLine("audioJs: audioJsStopRecording(): end. ");
 }

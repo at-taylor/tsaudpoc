@@ -1,7 +1,10 @@
+//  parms
+var audioIsJPlayer = "false";
 
 // control set
 var audioStartRecFieldId= null;
 var audioStopRecFieldId=null;
+var audioJPlayerFieldId=null;
 var audioPlayerFieldId=null;
 var audioDebugFieldId=null;
 var audioRecordStatusDiv=null;
@@ -27,7 +30,7 @@ function audioLogLine(msg) {
     $('#'+audioDebugFieldId).val($('#'+ audioDebugFieldId).val() + msg + '\n');
 }
 
-function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlayerFieldId,
+function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlayerFieldId, _audioJPlayerFieldId,
          _audioRecordStatusDiv, _audioRecordStatusCounterDiv, _audioDebugFieldId) {
 
    audioDebugFieldId = _audioDebugFieldId;
@@ -42,10 +45,12 @@ function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlay
     audioStartRecFieldId = _audioStartRecFieldId;
     audioStopRecFieldId = _audioStopRecFieldId;
     audioPlayerFieldId = _audioPlayerFieldId;
+    audioJPlayerFieldId = _audioJPlayerFieldId;
     audioRecordStatusDiv = _audioRecordStatusDiv;
     audioRecordStatusCounterDiv = _audioRecordStatusCounterDiv;
 
-    audioJsCreateJPlayer("G2MTestSound.wav");
+    if (audioIsJPlayer == "true")
+        audioJsCreateJPlayer("G2MTestSound.wav");
 
     audioJsSetButtonState(audioStateEnum.start);
 
@@ -54,9 +59,9 @@ function audioInitialize(_audioStartRecFieldId, _audioStopRecFieldId, _audioPlay
 
 function audioJsCreateJPlayer(fileName) {
 
-    audioLogLine("audioJs: audioCreateJPlayer(): start called with: " + fileName + " JPlayer control field: " + audioPlayerFieldId);
+    audioLogLine("audioJs: audioCreateJPlayer(): start called with: " + fileName + " JPlayer control field: " + audioJPlayerFieldId);
 
-    $('#'+audioPlayerFieldId).jPlayer({
+    $('#'+audioJPlayerFieldId).jPlayer({
         ready: function (event) {
             $(this).jPlayer("setMedia", {
 //                        m4a:"http://www.jplayer.org/audio/m4a/TSP-01-Cro_magnon_man.m4a",
@@ -80,7 +85,7 @@ function audioJsSwitchFile() {
 
     audioLogLine("audioJs: audioSwitchFile(): start");
 
-    audioSetPlayerFileName(audioPlayerFieldId, "G2MTestSound.wav");
+    audioSetPlayerFileName(audioJPlayerFieldId, "G2MTestSound.wav");
 
     audioLogLine("audioJs: audioSwitchFile(): end");
 
@@ -199,8 +204,10 @@ function audioJsStopRecording() {
     if (audioRecorder)
         audioRecorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
 
-    //$("#audioMediaAudioPlayCtl").attr("src", mediaFileFullName);
-    audioSetPlayerFileName(audioPlayerFieldId, mediaFileFullName);
+    if (audioIsJPlayer == "false")
+        $('#'+audioPlayerFieldId).attr("src", mediaFileFullName);
+    else
+        audioSetPlayerFileName(audioJPlayerFieldId, mediaFileFullName);
 
     audioJsSetButtonState(audioStateEnum.finishRec);
 

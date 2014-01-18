@@ -141,7 +141,14 @@ var audioRecordApp = {
             this.audioRecorder.release();
 
         //first create the file   then the success handler will launch recording to the file
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem(this), onFailFileSystem(this));
+        //window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem(this), onFailFileSystem(this));
+
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0
+            , function () {
+                this.logLine("in the filesystem inline")         ;
+                fileSystem.root.getFile(objRef.mediaRecFile, { create: true, exclusive: false }, onSuccessGetAudioFile(objRef), onFailFileSystem(objRef)) ;
+            }
+            , onFailFileSystem(this));
 
         //onSuccessFileSystem(this, "filesystem");
         this.logLine("audioRecordApp: startRecording(): end");

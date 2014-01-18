@@ -13,11 +13,11 @@
 
         <button id="audioChangeFileBtn" onclick="audioSwitchFile()">Set File</button>
 
-        <a id="audioStartRecID" >
+        <a id="audioStartRecID" onclick="audioRecordApp.startRecording()">
             <img src="img/record_btn_175.png"  >
         </a>
 
-        <a data-mini="true"  data-role="button" id="audioStopRecID" >
+        <a data-mini="true"  data-role="button" id="audioStopRecID" onclick="audioRecordApp.stopRecording()">
             Stop
         </a>
 
@@ -129,7 +129,7 @@
                 smoothPlayBar: true,
                 keyEnabled: true
             });
-            audioRecordApp.initialize("audioStartRecID", "audioStopRecID", "jquery_jplayer_1", "audioJsDebugArea");
+            audioRecordApp.initialize("audioStartRecID", "audioStopRecID", "jquery_jplayer_1", "audioRecStatusID", "audioRecPos","audioJsDebugArea");
 
             msg = "pocCleanPage: pageinit(): end";
             console.log(msg);

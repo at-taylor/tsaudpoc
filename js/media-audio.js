@@ -246,6 +246,10 @@ function audioJsStopRecording() {
     if (audioRecorder)
         audioRecorder.stopRecord(); // the file should be moved to "/sdcard/"+mediaRecFile
 
+    audioPlayer = new Media(mediaFileFullName, null,null);
+    audioPlayer.play();
+    audioPlayer.release();
+
     if (audioIsJPlayer == "false")
         $('#'+audioPlayerFieldId).attr("src", mediaFileFullName);
     else

@@ -93,35 +93,36 @@ var audioRecordApp = {
         function onSuccessFileSystem(objRef, fileSystem) {
 
             objRef.logLine("audioRecordApp: startRecording.onSuccessFileSystem(): start");
-            //objRef.logLine("audioRecordApp: startRecording.onSuccessFileSystem(): Root File System Name: " + fileSystem.root.name);
-
+            objRef.logLine("audioRecordApp: startRecording.onSuccessFileSystem(): Root File System Name: " + fileSystem.root.name);
 
             fileSystem.root.getFile(objRef.mediaRecFile, { create: true, exclusive: false }, onSuccessGetAudioFile(objRef), onFailFileSystem(objRef)) ;
 
             objRef.logLine("audioRecordApp: startRecording.onSuccessFileSystem(): end");
         }
+
         function onFailFileSystem(objRef, evt) {
-            console.log(evt.target.error.code);
-            objRef.logLine("audioRecordApp: startRecording(): failed in requestFileSystem call");
+
+            objRef.logLine("audioRecordApp: startRecording(): failed in requestFileSystem call.  Error: " + evt.target.error.code);
+
         }
 
         function onSuccessGetAudioFile(objRef, fileEntry) {
 
-            objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile:  File Name: " +objRef.mediaRecFile + " at " + fileEntry.fullPath);
+            objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile:  File Name: " + objRef.mediaRecFile + " at " + fileEntry.fullPath);
 
             // save the full file name
             objRef.mediaFileFullName = fileEntry.fullPath;
-            objRef.mediaRecFile = mediaFileFullName;
+            objRef.mediaRecFile = objRef.mediaFileFullName;
 
             // create media object using full media file name
-//            objRef.audioRecorder = new Media(objRef.mediaRecFile, function() {
-//                objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile Media Object Create: success");
-//            }, function() {
-//                objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile Media Object Create: fail");
-//            });
+            objRef.audioRecorder = new Media(objRef.mediaRecFile, function(objRef) {
+                objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile Media Object Create: success");
+            }, function(objRef) {
+                objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile Media Object Create: fail");
+            });
 
             // specific for iOS device: recording start here in call-back function
-            //launchRecording();
+            launchRecording();
 
             objRef.logLine("audioRecordApp: startRecording.onSuccessGetAudioFile: end");
         }
@@ -136,12 +137,13 @@ var audioRecordApp = {
         this.setButtonState(this.audioStateEnum.recording);
 
         // create media object - overwrite existing recording
-//        if (this.audioRecorder)
-//            this.audioRecorder.release();
-//
-//        //first create the file   then the success handler will launch recording to the file
-//        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem(), onFailFileSystem());
-        onSuccessFileSystem(this, "filesystem");
+        if (this.audioRecorder)
+            this.audioRecorder.release();
+
+        //first create the file   then the success handler will launch recording to the file
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onSuccessFileSystem(this), onFailFileSystem(this));
+
+        //onSuccessFileSystem(this, "filesystem");
         this.logLine("audioRecordApp: startRecording(): end");
     },
 
